@@ -69,7 +69,7 @@ class Home extends Component {
           <div style={styles.main}>
             <div style={styles.titleContainer}>
               <div style={styles.title}>
-                Flyx
+                Fly
               </div>
               <div style={styles.subtitle}>
                 Travel on demand. Anytime. Anywhere.
