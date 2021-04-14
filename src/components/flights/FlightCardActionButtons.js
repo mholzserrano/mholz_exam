@@ -7,7 +7,7 @@ export const FlightCardActionButtons = ({
   destination,
   postId,
 }) => {
-  const handleEditButtonClick = () => alert("Edit Clicked!");
+  const handleEditButtonClick = () => alert("Edit Clicked!!!");
 
   return (
     <div>
