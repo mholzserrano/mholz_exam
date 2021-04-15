@@ -65,11 +65,21 @@ class Flights extends Component {
 
   async deleteFlight(postId) {
     console.log("async delete!" + postId);
-    await this.props.firebase.removePost("YV78jlCywpWx0ajR21rkgAotmla2", "8");
+    await this.props.firebase.removePost(
+      "YV78jlCywpWx0ajR21rkgAotmla2", //user id
+      postId
+    );
   }
 
   renderFlightCards(flights) {
     if (flights) {
+      console.log("current: ", flights[0].data().current);
+
+      //Task 3: Arrange the posting from highest number of votes to lowest (You can mess with the dummy data in firebase if you did not skip steps 5-7 in the setup)
+      flights.sort((a, b) => {
+        return b.data().current - a.data().current;
+      });
+
       return flights.map((flight, i) => {
         // console.log(flight.id);
         return (
