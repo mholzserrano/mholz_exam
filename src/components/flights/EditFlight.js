@@ -81,6 +81,25 @@ class EditFlight extends Component {
     });
   }
 
+  updateFlightDetails() {
+    this.setState({
+      destCountry: airport
+        .findWhere({ iata: this.props.editFlightDetails.data().destination })
+        .get("country"),
+      destAirport: airport
+        .findWhere({ iata: this.props.editFlightDetails.data().destination })
+        .get("name"),
+      orgCountry: airport
+        .findWhere({ iata: this.props.editFlightDetails.data().origin })
+        .get("country"),
+      orgAirport: airport
+        .findWhere({ iata: this.props.editFlightDetails.data().origin })
+        .get("name"),
+      date: this.props.editFlightDetails.data().date,
+      clicked: false,
+    });
+  }
+
   render() {
     // console.log(this.props.userId);
     const { open } = this.props;
@@ -95,26 +114,9 @@ class EditFlight extends Component {
       date,
     } = this.state;
     console.log(this.props.editFlightDetails);
-
+    console.log(this.state);
     if (this.props.editFlightDetails && this.state.clicked == true) {
-      console.log(this.props.editFlightDetails.data());
-      this.setState({
-        destCountry: airport
-          .findWhere({ iata: this.props.editFlightDetails.data().destination })
-          .get("country"),
-        destAirport: airport
-          .findWhere({ iata: this.props.editFlightDetails.data().destination })
-          .get("name"),
-        orgCountry: airport
-          .findWhere({ iata: this.props.editFlightDetails.data().origin })
-          .get("country"),
-        orgAirport: airport
-          .findWhere({ iata: this.props.editFlightDetails.data().origin })
-          .get("name"),
-        date: this.props.editFlightDetails.data().date,
-        clicked: false,
-      });
-      console.log("hello!!");
+      this.updateFlightDetails();
     }
 
     return (
@@ -314,7 +316,6 @@ class EditFlight extends Component {
   handleClose() {
     this.setState({ ...initialState });
     this.props.onClose();
-    console.log("CLOSEEE!!!");
   }
 }
 
