@@ -99,6 +99,7 @@ class AddFlight extends Component {
         maxWidth={false}
       >
         <Box style={styles.container}>
+          Add Flight
           {this.renderOrigin(countries, orgCountry, orgAirport)}
           {this.renderDestination(countries, destCountry, destAirport)}
           <div style={{ display: "flex" }}>

@@ -55,10 +55,10 @@ class Flights extends Component {
         filterHandler={this.filter}
       >
         {this.renderFlightCards(flights)}
-        {/* <AddFlight
+        <AddFlight
           open={openFlight}
           onClose={() => this.setState({ openFlight: false })}
-        /> */}
+        />
         <EditFlight
           open={openFlightEdit}
           editFlightDetails={this.state.editFlightdDetails}
