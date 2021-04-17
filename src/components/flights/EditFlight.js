@@ -158,7 +158,7 @@ class EditFlight extends Component {
                 disabled={loading}
                 onClick={() => this.postFlight(orgAirport, destAirport, date)}
               >
-                {success ? "POSTED" : "POST"}
+                {success ? "UPDATED" : "UPDATE"}
                 {loading && (
                   <CircularProgress size={24} style={styles.buttonProgress} />
                 )}
