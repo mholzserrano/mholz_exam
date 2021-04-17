@@ -8,8 +8,8 @@ import { Icon } from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
 import { Main } from "../";
 import { FlightCard, AddFlight } from ".";
-import { CompareSharp } from "@material-ui/icons";
-import { createPalette } from "@material-ui/core/styles";
+import { BorderAll, CompareSharp } from "@material-ui/icons";
+import airport from "airport-codes";
 
 class Flights extends Component {
   actions = [
@@ -22,14 +22,20 @@ class Flights extends Component {
   state = {
     loading: false,
     flights: null,
+    originalFlightsValue: null,
     openFlight: false,
+    filterValue: null,
   };
 
   componentDidMount() {
     this.setState({ loading: true });
     const flightsRef = this.props.firebase.flights();
     flightsRef.onSnapshot((snapshot) => {
-      this.setState({ flights: snapshot.docs, loading: false });
+      this.setState({
+        flights: snapshot.docs,
+        originalFlightsValue: snapshot.docs,
+        loading: false,
+      });
       // console.log(snapshot.docs);
     });
   }
@@ -39,7 +45,11 @@ class Flights extends Component {
     // console.log(flights);
 
     return (
-      <Main actions={this.actions}>
+      <Main
+        actions={this.actions}
+        searchHandler={this.search}
+        filterHandler={this.filter}
+      >
         {this.renderFlightCards(flights)}
         <AddFlight
           open={openFlight}
@@ -49,9 +59,12 @@ class Flights extends Component {
     );
   }
 
-  deleteFlightCard = (selectedFlightCard, postId) => {
+  deleteFlightCard = (selectedFlightCard, postId, uid) => {
     console.log("deleteD");
-    this.deleteFlight(postId);
+
+    console.log(`uid -> `, this.props.test);
+
+    this.deleteFlight(postId, uid);
 
     this.setState({
       flights: this.state.flights.filter((flight) => {
@@ -63,24 +76,98 @@ class Flights extends Component {
     });
   };
 
-  async deleteFlight(postId) {
+  search = (event) => {
+    console.log("search!!!");
+
+    console.log("orginal: ", this.state.originalFlightsValue);
+
+    if (event.target.value) {
+      console.log("search 123:", event.target.value);
+      this.setState({
+        flights: this.state.originalFlightsValue.filter((flight) => {
+          //searchby destination
+          return (
+            flight
+              .data()
+              .destination.toLowerCase()
+              .includes(event.target.value.toLowerCase()) ||
+            airport
+              .findWhere({ iata: flight.data().destination })
+              .get("name")
+              .toLowerCase()
+              .includes(event.target.value.toLowerCase()) ||
+            flight
+              .data()
+              .origin.toLowerCase()
+              .includes(event.target.value.toLowerCase()) ||
+            airport
+              .findWhere({ iata: flight.data().origin })
+              .get("name")
+              .toLowerCase()
+              .includes(event.target.value.toLowerCase())
+          );
+        }),
+      });
+      console.log("flight state: ", this.state.flights);
+    } else {
+      this.setState({
+        flights: this.state.originalFlightsValue,
+      });
+    }
+  };
+
+  filter = (event) => {
+    console.log("filter: ", event.target.value);
+    this.setState({ filterValue: event.target.value });
+  };
+
+  async deleteFlight(postId, uid) {
     console.log("async delete!" + postId);
-    await this.props.firebase.removePost(
-      "YV78jlCywpWx0ajR21rkgAotmla2", //user id
-      postId
-    );
+    await this.props.firebase.removePost(uid, postId);
   }
 
   renderFlightCards(flights) {
+    let filteredFlights;
+
+    console.log(this.state.filterValue);
+
     if (flights) {
-      console.log("current: ", flights[0].data().current);
+      switch (this.state.filterValue) {
+        case 1:
+          console.log("9 below");
+          filteredFlights = flights.filter((flight) => {
+            return flight.data().current <= 9;
+          });
+          break;
+        case 10:
+          console.log("10-99");
+          filteredFlights = flights.filter((flight) => {
+            return flight.data().current > 9 && flight.data().current < 100;
+          });
+          break;
+        case 100:
+          console.log("100-999");
+          filteredFlights = flights.filter((flight) => {
+            return flight.data().current >= 99 && flight.data().current < 1000;
+          });
+          break;
+        case 1000:
+          console.log("1000 above");
+          filteredFlights = flights.filter((flight) => {
+            return flight.data().current > 1000;
+          });
+          break;
+        default:
+          filteredFlights = flights;
+          break;
+      }
 
       //Task 3: Arrange the posting from highest number of votes to lowest (You can mess with the dummy data in firebase if you did not skip steps 5-7 in the setup)
-      flights.sort((a, b) => {
+      filteredFlights.sort((a, b) => {
         return b.data().current - a.data().current;
       });
 
-      return flights.map((flight, i) => {
+      return filteredFlights.map((flight, i) => {
         // console.log(flight.id);
         return (
           <FlightCard

@@ -65,10 +65,22 @@ class Firebase {
 
   removePost = async (uid, postid) => {
     console.log("Firebase RemovePost!");
+    console.log("Post ID: ", postid);
+
     const user = await this.user(uid);
+    const userData = await this.getUser(uid);
+    const posts = userData.posts;
+
+    // console.log("User collection: ", user.collection("posts"));
+    console.log("New Posts: ", firestore.FieldValue.arrayRemove(postid));
+
+    // Delete doc from Firestore
+    this.db.collection("flights").doc(postid).delete();
+
+    // const posts = user.d;
 
     return await user.update({
-      posts: firestore.FieldValue.arrayRemove(postid),
+      posts: posts.filter((post) => post.id !== postid),
     });
   };
 

@@ -70,6 +70,7 @@ class FlightCard extends Component {
         onMouseLeave={this.unhover.bind(this)}
       >
         <Box style={styles.card}>{this.renderFlight(details)}</Box>
+
         {/* <Overlay
           show={hovered}
           style={styles.overlay}
@@ -80,6 +81,7 @@ class FlightCard extends Component {
           postId={postId}
           deleteFlightCard={this.props.deleteFlightCard}
           destination={details.destination}
+          userId={details.poster.id}
         />
       </div>
     );

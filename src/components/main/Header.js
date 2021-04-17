@@ -1,96 +1,112 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
-import { withFirebase } from '../../firebase'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { Button, IconButton, ButtonBase, Menu, MenuItem, Avatar } from '@material-ui/core'
-import { HeaderSearch } from '.'
-import { grey } from '@material-ui/core/colors'
-import Notifications from '@material-ui/icons/Notifications'
-import MoreVert from '@material-ui/icons/MoreVert'
-import { PATHS } from '../../constants';
-import { accountAction, authAction } from '../../actions';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { withFirebase } from "../../firebase";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import {
+  Button,
+  IconButton,
+  ButtonBase,
+  Menu,
+  MenuItem,
+  Avatar,
+} from "@material-ui/core";
+import { HeaderSearch } from ".";
+import { grey } from "@material-ui/core/colors";
+import Notifications from "@material-ui/icons/Notifications";
+import MoreVert from "@material-ui/icons/MoreVert";
+import { PATHS } from "../../constants";
+import { accountAction, authAction } from "../../actions";
 
 const styles = {
   container: {
     height: 64,
     margin: "0px 8px",
-    display: 'flex',
-    alignItems: 'center'
+    display: "flex",
+    alignItems: "center",
   },
   buttonContainer: {
-    display: 'flex'
+    display: "flex",
   },
   button: {
-    textTransform: 'none',
+    textTransform: "none",
     borderRadius: 10,
-    fontWeight: 'bold',
-    color: grey[500]
+    fontWeight: "bold",
+    color: grey[500],
   },
   search: {
-    flex: 1
+    flex: 1,
   },
   logoContainer: {
     borderRadius: 20,
   },
   logo: {
     padding: 4,
-    margin: 8
+    margin: 8,
   },
   nameAvatar: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     height: 20,
     width: 20,
-    marginRight: 5
-  }
-}
+    marginRight: 5,
+  },
+};
 
 const pageButtons = [
   {
-    name: 'Profile',
-    path: '',
-    type: 'account'
+    name: "Profile",
+    path: "",
+    type: "account",
   },
-]
+];
 
 const HeaderPageButtons = (props) => {
   if (props.currentUser) {
-    return (
-      pageButtons.map((page) => {
-        let display = page.name
-        if (page.type === 'account') {
-          display = <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar style={styles.nameAvatar}>{props.currentUser.displayName.charAt(0)}</Avatar>
+    return pageButtons.map((page) => {
+      let display = page.name;
+      if (page.type === "account") {
+        display = (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Avatar style={styles.nameAvatar}>
+              {props.currentUser.displayName.charAt(0)}
+            </Avatar>
             {props.currentUser.displayName}
           </div>
-        }
-        return <Button style={props.location.pathname.includes(page.name.toLowerCase()) ? { ...styles.button, color: 'rgb(0,0,0)' } : styles.button}
+        );
+      }
+      return (
+        <Button
+          style={
+            props.location.pathname.includes(page.name.toLowerCase())
+              ? { ...styles.button, color: "rgb(0,0,0)" }
+              : styles.button
+          }
           onClick={() => props.history.push(page.path)}
         >
           {display}
         </Button>
-      })
-    )
+      );
+    });
   } else {
-    return
+    return;
   }
-}
+};
 
 const OptionsPopOver = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-    props.onClick()
-  }
+    setAnchorEl(event.currentTarget);
+    props.onClick();
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   const onLogout = () => {
-    props.onLogout()
-  }
+    props.onLogout();
+  };
 
   return (
     <div>
@@ -106,21 +122,28 @@ const OptionsPopOver = (props) => {
         <MenuItem onClick={onLogout}>Logout</MenuItem>
       </Menu>
     </div>
-  )
-}
+  );
+};
 
 class Header extends Component {
   state = {
-    options: false
-  }
+    options: false,
+  };
 
   render() {
     return (
       <div style={styles.container}>
-        <ButtonBase style={styles.logoContainer} onClick={this.logoPress.bind(this)}>
+        <ButtonBase
+          style={styles.logoContainer}
+          onClick={this.logoPress.bind(this)}
+        >
           Logo
         </ButtonBase>
-        <HeaderSearch style={styles.search} />
+        <HeaderSearch
+          style={styles.search}
+          searchHandler={this.props.searchHandler}
+          filterHandler={this.props.filterHandler}
+        />
         <div style={styles.buttonContainer}>
           <HeaderPageButtons {...this.props} />
           <IconButton>
@@ -133,25 +156,25 @@ class Header extends Component {
           />
         </div>
       </div>
-    )
+    );
   }
 
   logoPress() {
-    this.props.history.push(PATHS.home)
+    this.props.history.push(PATHS.home);
   }
 
   logout() {
-    this.props.firebase.signOut()
+    this.props.firebase.signOut();
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.auth.user
-  }
-}
+    currentUser: state.auth.user,
+  };
+};
 
 export default compose(
   withFirebase,
   withRouter
-)(connect(mapStateToProps)(Header))
+)(connect(mapStateToProps)(Header));
