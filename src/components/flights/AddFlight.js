@@ -80,7 +80,6 @@ class AddFlight extends Component {
   }
 
   render() {
-    // console.log(this.props.userId);
     const { open } = this.props;
     const {
       loading,

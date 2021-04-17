@@ -10,6 +10,7 @@ import { Main } from "../";
 import { FlightCard, AddFlight } from ".";
 import { BorderAll, CompareSharp } from "@material-ui/icons";
 import airport from "airport-codes";
+import EditFlight from "./EditFlight";
 
 class Flights extends Component {
   actions = [
@@ -24,7 +25,10 @@ class Flights extends Component {
     flights: null,
     originalFlightsValue: null,
     openFlight: false,
+    openFlightEdit: false,
     filterValue: null,
+    editFlightdDetails: null,
+    postIdValue: null,
   };
 
   componentDidMount() {
@@ -41,7 +45,7 @@ class Flights extends Component {
   }
 
   render() {
-    const { flights, openFlight } = this.state;
+    const { flights, openFlight, openFlightEdit } = this.state;
     // console.log(flights);
 
     return (
@@ -51,13 +55,35 @@ class Flights extends Component {
         filterHandler={this.filter}
       >
         {this.renderFlightCards(flights)}
-        <AddFlight
+        {/* <AddFlight
           open={openFlight}
           onClose={() => this.setState({ openFlight: false })}
+        /> */}
+        <EditFlight
+          open={openFlightEdit}
+          editFlightDetails={this.state.editFlightdDetails}
+          postIdValue={this.state.postIdValue}
+          onClose={() => this.setState({ openFlightEdit: false })}
         />
       </Main>
     );
   }
+
+  clickEditFlightCard = (postId) => {
+    this.setState({ openFlightEdit: true });
+    console.log("click Edit FlightCard", postId);
+
+    this.setState({
+      editFlightdDetails: this.state.flights.find((flight) => {
+        console.log(flight.id, " and ", postId);
+        return flight.id == postId;
+      }),
+    });
+    this.setState({
+      postIdValue: postId,
+    });
+    console.log(postId);
+  };
 
   deleteFlightCard = (selectedFlightCard, postId, uid) => {
     console.log("deleteD");
@@ -129,7 +155,7 @@ class Flights extends Component {
   renderFlightCards(flights) {
     let filteredFlights;
 
-    console.log(this.state.filterValue);
+    // console.log(this.state.filterValue);
 
     if (flights) {
       switch (this.state.filterValue) {
@@ -175,6 +201,7 @@ class Flights extends Component {
             postId={flight.id}
             details={flight.data()}
             deleteFlightCard={this.deleteFlightCard}
+            clickEditFlightCard={this.clickEditFlightCard}
           />
         );
       });

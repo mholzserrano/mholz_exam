@@ -64,9 +64,11 @@ const initialState = {
   orgAirport: null,
   date: new Date(),
   filteredFlights: null,
+  flightDetails: null,
+  clicked: true,
 };
 
-class AddFlight extends Component {
+class EditFlight extends Component {
   state = initialState;
 
   componentWillMount() {
@@ -92,6 +94,28 @@ class AddFlight extends Component {
       orgAirport,
       date,
     } = this.state;
+    console.log(this.props.editFlightDetails);
+
+    if (this.props.editFlightDetails && this.state.clicked == true) {
+      console.log(this.props.editFlightDetails.data());
+      this.setState({
+        destCountry: airport
+          .findWhere({ iata: this.props.editFlightDetails.data().destination })
+          .get("country"),
+        destAirport: airport
+          .findWhere({ iata: this.props.editFlightDetails.data().destination })
+          .get("name"),
+        orgCountry: airport
+          .findWhere({ iata: this.props.editFlightDetails.data().origin })
+          .get("country"),
+        orgAirport: airport
+          .findWhere({ iata: this.props.editFlightDetails.data().origin })
+          .get("name"),
+        date: this.props.editFlightDetails.data().date,
+        clicked: false,
+      });
+      console.log("hello!!");
+    }
 
     return (
       <Dialog
@@ -100,6 +124,7 @@ class AddFlight extends Component {
         maxWidth={false}
       >
         <Box style={styles.container}>
+          Edit Flight
           {this.renderOrigin(countries, orgCountry, orgAirport)}
           {this.renderDestination(countries, destCountry, destAirport)}
           <div style={{ display: "flex" }}>
@@ -190,13 +215,14 @@ class AddFlight extends Component {
   }
 
   // renderFlights(origin, destination, date) {
-  //   const flightsRef = this.props.firebase.flights()
+  //   const flightsRef = this.props.firebase.flights();
   //   const filteredFlights = flightsRef
-  //     .where('origin', '==', this.getIata(origin))
-  //     .where('destination', '==', this.getIata(destination))
-  //     .where('date', '==', moment(date).startOf('day').toDate().toString())
+  //     .where("origin", "==", this.getIata(origin))
+  //     .where("destination", "==", this.getIata(destination))
+  //     .where("date", "==", moment(date).startOf("day").toDate().toString())
   //     .get()
-  //     .then((snapshot) => console.log(snapshot.docs))
+  //     .then((snapshot) => console.log(snapshot.docs));
+  //   console.log(filteredFlights);
   // }
 
   renderOrigin(countries, country, airport) {
@@ -288,6 +314,7 @@ class AddFlight extends Component {
   handleClose() {
     this.setState({ ...initialState });
     this.props.onClose();
+    console.log("CLOSEEE!!!");
   }
 }
 
@@ -295,4 +322,4 @@ const mapStateToProps = (state) => ({
   userId: state.auth.user.uid,
 });
 
-export default connect(mapStateToProps)(withFirebase(AddFlight));
+export default connect(mapStateToProps)(withFirebase(EditFlight));

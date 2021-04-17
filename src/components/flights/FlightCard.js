@@ -82,6 +82,7 @@ class FlightCard extends Component {
           deleteFlightCard={this.props.deleteFlightCard}
           destination={details.destination}
           userId={details.poster.id}
+          clickEditFlightCard={this.props.clickEditFlightCard}
         />
       </div>
     );

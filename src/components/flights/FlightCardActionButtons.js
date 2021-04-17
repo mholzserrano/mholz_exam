@@ -9,15 +9,16 @@ export const FlightCardActionButtons = ({
   destination,
   postId,
   userId,
+  clickEditFlightCard,
 }) => {
-  const handleEditButtonClick = () => alert("Edit Clicked!!!" + userId);
+  // const handleEditButtonClick = () => alert("Edit Clicked!!!" + userId);
 
   return (
     <div>
       <Button
         variant="contained"
         color="secondary"
-        onClick={handleEditButtonClick}
+        onClick={() => clickEditFlightCard(postId)}
       >
         Edits
       </Button>
