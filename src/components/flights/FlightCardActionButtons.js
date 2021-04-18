@@ -7,7 +7,7 @@ import { withFirebase } from "../../firebase";
 const styles = {
   cardButtons: {
     width: "100%",
-    paddingTop: "15px",
+    paddingTop: "17px",
     justifyContent: "center",
     display: "flex",
     justifyContent: "center",

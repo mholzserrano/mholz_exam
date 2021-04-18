@@ -70,12 +70,12 @@ class FlightCard extends Component {
         onMouseLeave={this.unhover.bind(this)}
       >
         <Box style={styles.card}>{this.renderFlight(details)}</Box>
-        {/* <Overlay
+        <Overlay
           show={hovered}
           style={styles.overlay}
           styleShown={styles.overlayShown}
           styleHidden={styles.overlayHidden}
-        /> */}
+        />
       </div>
     );
   }

@@ -7,6 +7,7 @@ import { grey } from "@material-ui/core/colors";
 import { COLORS } from "../../constants";
 import { uiAction } from "../../actions";
 import Select from "@material-ui/core/Select";
+import { MicNone } from "@material-ui/icons";
 
 const styles = {
   container: {
@@ -39,6 +40,7 @@ const styles = {
 class HeaderSearch extends Component {
   state = {
     focused: false,
+    votesFilter: "None",
   };
 
   render() {
@@ -63,12 +65,13 @@ class HeaderSearch extends Component {
           <Select
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
-            // value={age}
+            // value={this.state.votesFilter}
             onChange={this.props.filterHandler}
             label="No. of votes"
             placeholder="No. of votes"
             on
           >
+            Filter by Number of Votes
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
