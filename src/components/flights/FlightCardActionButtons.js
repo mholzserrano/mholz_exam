@@ -3,6 +3,8 @@ import { Button } from "@material-ui/core";
 import { PinDropSharp } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { withFirebase } from "../../firebase";
+import { green, purple } from "@material-ui/core/colors";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   cardButtons: {
@@ -13,7 +15,18 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
   },
+  buttons: { backgroundColor: green },
 };
+
+const ColorButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700],
+    },
+  },
+}))(Button);
 
 const FlightCardActionButtons = ({
   deleteFlightCard,
@@ -22,6 +35,8 @@ const FlightCardActionButtons = ({
   userId,
   clickEditFlightCard,
   setLoginUserId,
+  detailsCurrent,
+  voteFlight,
 }) => {
   useEffect(() => {
     setLoginUserId(userId);
@@ -30,6 +45,16 @@ const FlightCardActionButtons = ({
 
   return (
     <div style={styles.cardButtons}>
+      <ColorButton
+        variant="contained"
+        color="primary"
+        size="small"
+        onClick={() => voteFlight(postId, detailsCurrent)}
+        // className={classes.margin}
+      >
+        VOTE
+      </ColorButton>
+      &nbsp;&nbsp;
       <Button
         variant="contained"
         color="primary"
