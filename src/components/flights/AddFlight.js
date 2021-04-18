@@ -152,11 +152,12 @@ class AddFlight extends Component {
         const userRef = await this.props.firebase.user(this.props.userId);
         // console.log(this.props.userId);
         await flightRef.set({
-          current: 1,
+          current: 0,
           origin: this.getIata(origin),
           destination: this.getIata(destination),
           date: moment(date).startOf("day").toDate().toString(),
           poster: userRef,
+          votes: [],
         });
         await this.props.firebase.addPost(this.props.userId, flightRef);
 
