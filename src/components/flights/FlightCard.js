@@ -7,7 +7,7 @@ import { mdiAirplane } from "@mdi/js";
 import { Box } from "@material-ui/core";
 import { Overlay } from ".";
 import { grey } from "@material-ui/core/colors";
-import { FlightCardActionButtons } from "./FlightCardActionButtons";
+import FlightCardActionButtons from "./FlightCardActionButtons";
 
 const cardHeight = 300;
 const cardWidth = 236;
@@ -19,7 +19,7 @@ const styles = {
     height: "100%",
   },
   overlayHidden: {
-    transform: `scale(0.8) translateY(-${cardHeight * 1.2}px)`,
+    transform: `scale(0.8) translateY(-${cardHeight * 0.8}px)`,
   },
   overlayShown: {
     transform: `scale(1) translateY(-${cardHeight}px)`,
@@ -70,20 +70,12 @@ class FlightCard extends Component {
         onMouseLeave={this.unhover.bind(this)}
       >
         <Box style={styles.card}>{this.renderFlight(details)}</Box>
-
         {/* <Overlay
           show={hovered}
           style={styles.overlay}
           styleShown={styles.overlayShown}
           styleHidden={styles.overlayHidden}
         /> */}
-        <FlightCardActionButtons
-          postId={postId}
-          deleteFlightCard={this.props.deleteFlightCard}
-          destination={details.destination}
-          userId={details.poster.id}
-          clickEditFlightCard={this.props.clickEditFlightCard}
-        />
       </div>
     );
   }
@@ -99,6 +91,9 @@ class FlightCard extends Component {
         }}
       >
         <div
+          onClick={() =>
+            this.props.voteFlight(this.props.postId, details.current)
+          }
           style={{
             height: "65%",
             fontFamily: "Open Sans Condensed",
@@ -140,6 +135,13 @@ class FlightCard extends Component {
             </div>
           </div>
         </div>
+        <FlightCardActionButtons
+          postId={this.props.postId}
+          deleteFlightCard={this.props.deleteFlightCard}
+          destination={details.destination}
+          clickEditFlightCard={this.props.clickEditFlightCard}
+          setLoginUserId={this.props.setLoginUserId}
+        />
       </div>
     );
   }

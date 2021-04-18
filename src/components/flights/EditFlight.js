@@ -79,6 +79,7 @@ class EditFlight extends Component {
     this.setState({
       countries,
     });
+    this.updateFlightDetails();
   }
 
   updateFlightDetails() {
@@ -113,12 +114,10 @@ class EditFlight extends Component {
       orgAirport,
       date,
     } = this.state;
-    console.log(this.props.editFlightDetails);
-    console.log(this.state);
-    if (this.props.editFlightDetails && this.state.clicked == true) {
-      this.updateFlightDetails();
-    }
 
+    // if (this.props.editFlightDetails && this.state.clicked === true) {
+    //   this.updateFlightDetails();
+    // }
     return (
       <Dialog
         open={open}
@@ -172,21 +171,34 @@ class EditFlight extends Component {
 
   async postFlight(origin, destination, date) {
     if (!this.state.success) {
+      console.log("origin", origin);
+      console.log("destination", destination);
+      console.log("date", moment(date).startOf("day").toDate().toString());
+      // if (origin && destination && date) {
+      //   this.setState({ loading: true });
+      //   const flightsRef = this.props.firebase.flights();
+      //   const flightRef = await flightsRef.doc();
+      //   const userRef = await this.props.firebase.user(this.props.userId);
+      //   // console.log(this.props.userId);
+      //   await flightRef.set({
+      //     current: 1,
+      //     origin: this.getIata(origin),
+      //     destination: this.getIata(destination),
+      //     date: moment(date).startOf("day").toDate().toString(),
+      //     poster: userRef,
+      //   });
+      //   await this.props.firebase.addPost(this.props.userId, flightRef);
+
+      //   this.setState({ loading: false, success: true });
+      // }
       if (origin && destination && date) {
         this.setState({ loading: true });
-        const flightsRef = this.props.firebase.flights();
-        const flightRef = await flightsRef.doc();
-        const userRef = await this.props.firebase.user(this.props.userId);
-        // console.log(this.props.userId);
-        await flightRef.set({
-          current: 1,
-          origin: this.getIata(origin),
-          destination: this.getIata(destination),
-          date: moment(date).startOf("day").toDate().toString(),
-          poster: userRef,
-        });
-        await this.props.firebase.addPost(this.props.userId, flightRef);
-
+        await this.props.firebase.updatePost(
+          this.props.postIdValue,
+          this.getIata(origin),
+          this.getIata(destination),
+          moment(date).startOf("day").toDate().toString()
+        );
         this.setState({ loading: false, success: true });
       }
     }

@@ -29,6 +29,8 @@ class Flights extends Component {
     filterValue: null,
     editFlightdDetails: null,
     postIdValue: null,
+    loginUserId: null,
+    postCurrent: null,
   };
 
   componentDidMount() {
@@ -59,30 +61,47 @@ class Flights extends Component {
           open={openFlight}
           onClose={() => this.setState({ openFlight: false })}
         />
-        <EditFlight
-          open={openFlightEdit}
-          editFlightDetails={this.state.editFlightdDetails}
-          postIdValue={this.state.postIdValue}
-          onClose={() => this.setState({ openFlightEdit: false })}
-        />
+        {openFlightEdit && (
+          <EditFlight
+            open={openFlightEdit}
+            editFlightDetails={this.state.editFlightdDetails}
+            postIdValue={this.state.postIdValue}
+            onClose={() => this.setState({ openFlightEdit: false })}
+          />
+        )}
       </Main>
     );
   }
 
-  clickEditFlightCard = (postId) => {
-    this.setState({ openFlightEdit: true });
-    console.log("click Edit FlightCard", postId);
+  voteFlight = async (postId, postCurrent) => {
+    console.log("vote clicked!!", postId);
+    console.log(this.state.originalFlightsValue);
+    const postDetails = this.state.originalFlightsValue.find((flight) => {
+      return flight.id == postId;
+    });
+    console.log(postDetails.data());
+    const voteExist = postDetails.data().votes.find((vote) => {
+      console.log("vote exist", vote);
+      return vote == this.state.loginUserId;
+    });
+    console.log("voteexits", voteExist);
 
+    if (!voteExist) {
+      this.props.firebase.votePost(postId, this.state.loginUserId, postCurrent);
+    } else {
+      alert("You have already voted on this flight!");
+    }
+  };
+
+  clickEditFlightCard = (postId) => {
     this.setState({
+      openFlightEdit: true,
       editFlightdDetails: this.state.flights.find((flight) => {
-        console.log(flight.id, " and ", postId);
+        console.log("console flight", flight);
         return flight.id == postId;
       }),
-    });
-    this.setState({
       postIdValue: postId,
     });
-    console.log(postId);
   };
 
   deleteFlightCard = (selectedFlightCard, postId, uid) => {
@@ -138,6 +157,15 @@ class Flights extends Component {
     } else {
       this.setState({
         flights: this.state.originalFlightsValue,
+      });
+    }
+  };
+
+  setLoginUserId = (userId) => {
+    if (!this.state.loginUserId) {
+      console.log("userid", userId);
+      this.setState({
+        loginUserId: userId,
       });
     }
   };
@@ -202,6 +230,8 @@ class Flights extends Component {
             details={flight.data()}
             deleteFlightCard={this.deleteFlightCard}
             clickEditFlightCard={this.clickEditFlightCard}
+            voteFlight={this.voteFlight}
+            setLoginUserId={this.setLoginUserId}
           />
         );
       });

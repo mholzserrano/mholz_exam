@@ -1,33 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@material-ui/core";
 import { PinDropSharp } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { withFirebase } from "../../firebase";
 
-export const FlightCardActionButtons = ({
+const styles = {
+  cardButtons: {
+    width: "100%",
+    paddingTop: "15px",
+    justifyContent: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+};
+
+const FlightCardActionButtons = ({
   deleteFlightCard,
   destination,
   postId,
   userId,
   clickEditFlightCard,
+  setLoginUserId,
 }) => {
-  // const handleEditButtonClick = () => alert("Edit Clicked!!!" + userId);
+  useEffect(() => {
+    setLoginUserId(userId);
+    console.log("flightcaradaction buttons user id ", userId);
+  });
 
   return (
-    <div>
+    <div style={styles.cardButtons}>
       <Button
         variant="contained"
-        color="secondary"
+        color="primary"
+        size="small"
         onClick={() => clickEditFlightCard(postId)}
       >
-        Edits
+        EDIT
       </Button>
+      &nbsp;&nbsp;
       <Button
         variant="contained"
         color="secondary"
+        size="small"
         onClick={() => deleteFlightCard(destination, postId, userId)}
       >
-        Delete
+        DELETE
       </Button>
     </div>
   );

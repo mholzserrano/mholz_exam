@@ -84,8 +84,35 @@ class Firebase {
     });
   };
 
+  updatePost = async (postid, origin, destination, date) => {
+    const postRef = this.db.collection("flights").doc(postid);
+
+    return await postRef
+      .update({
+        date: date,
+        origin: origin,
+        destination: destination,
+      })
+      .then(() => {
+        console.log("Document successfully updated!");
+      })
+      .catch((error) => {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+      });
+  };
+
+  votePost = async (postId, userId, postCurrent) => {
+    const flight = await this.db.collection("flights").doc(postId);
+
+    console.log("postcurrent", postCurrent);
+    return await flight.update({
+      votes: firestore.FieldValue.arrayUnion(userId),
+      current: postCurrent + 1,
+    });
+  };
+
   flights = () => {
-    console.log("Firebase flight!");
     return this.db.collection("flights");
   };
 }
