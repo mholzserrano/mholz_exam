@@ -37,6 +37,7 @@ const FlightCardActionButtons = ({
   setLoginUserId,
   detailsCurrent,
   voteFlight,
+  voteExisted,
 }) => {
   useEffect(() => {
     setLoginUserId(userId);
@@ -45,15 +46,30 @@ const FlightCardActionButtons = ({
 
   return (
     <div style={styles.cardButtons}>
-      <ColorButton
+      {voteExisted ? (
+        <Button variant="contained" size="small" disabled>
+          VOTED
+        </Button>
+      ) : (
+        <ColorButton
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => voteFlight(postId, detailsCurrent)}
+          // className={classes.margin}
+        >
+          VOTE
+        </ColorButton>
+      )}
+      {/* <ColorButton
         variant="contained"
         color="primary"
         size="small"
         onClick={() => voteFlight(postId, detailsCurrent)}
         // className={classes.margin}
       >
-        VOTE
-      </ColorButton>
+        {voteExisted ? "VOTED" : "VOTE"}
+      </ColorButton> */}
       &nbsp;&nbsp;
       <Button
         variant="contained"

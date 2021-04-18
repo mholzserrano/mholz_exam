@@ -64,6 +64,7 @@ class FlightCard extends Component {
   render() {
     const { details, postId } = this.props; // destructure
     const { hovered } = this.state;
+    console.log(this.props.voteExisted);
     return (
       <div
         style={styles.container}
@@ -144,6 +145,7 @@ class FlightCard extends Component {
           setLoginUserId={this.props.setLoginUserId}
           detailsCurrent={details.current}
           voteFlight={this.props.voteFlight}
+          voteExisted={this.props.voteExisted}
         />
       </div>
     );

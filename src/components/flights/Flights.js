@@ -74,23 +74,24 @@ class Flights extends Component {
   }
 
   voteFlight = async (postId, postCurrent) => {
-    console.log("vote clicked!!", postId);
-    console.log(this.state.originalFlightsValue);
-    const postDetails = this.state.originalFlightsValue.find((flight) => {
-      return flight.id == postId;
-    });
-    console.log(postDetails.data());
-    const voteExist = postDetails.data().votes.find((vote) => {
-      console.log("vote exist", vote);
-      return vote == this.state.loginUserId;
-    });
-    console.log("voteexits", voteExist);
+    this.props.firebase.votePost(postId, this.state.loginUserId, postCurrent);
+    // console.log("vote clicked!!", postId);
+    // console.log(this.state.originalFlightsValue);
+    // const postDetails = this.state.originalFlightsValue.find((flight) => {
+    //   return flight.id == postId;
+    // });
+    // console.log(postDetails.data());
+    // const voteExist = postDetails.data().votes.find((vote) => {
+    //   console.log("vote exist", vote);
+    //   return vote == this.state.loginUserId;
+    // });
+    // console.log("voteexits", voteExist);
 
-    if (!voteExist) {
-      this.props.firebase.votePost(postId, this.state.loginUserId, postCurrent);
-    } else {
-      alert("You have already voted on this flight!");
-    }
+    // if (!voteExist) {
+    //   this.props.firebase.votePost(postId, this.state.loginUserId, postCurrent);
+    // } else {
+    //   alert("You have already voted on this flight!");
+    // }
   };
 
   clickEditFlightCard = (postId) => {
@@ -232,6 +233,10 @@ class Flights extends Component {
             clickEditFlightCard={this.clickEditFlightCard}
             voteFlight={this.voteFlight}
             setLoginUserId={this.setLoginUserId}
+            voteExisted={flight.data().votes.find((vote) => {
+              console.log("vote exist", vote);
+              return vote == this.state.loginUserId;
+            })}
           />
         );
       });
