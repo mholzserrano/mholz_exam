@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = {
   cardButtons: {
     width: "100%",
-    paddingTop: "17px",
+    paddingTop: "19px",
     justifyContent: "center",
     display: "flex",
     justifyContent: "center",
