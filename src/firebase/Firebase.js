@@ -105,7 +105,7 @@ class Firebase {
   votePost = async (postId, userId, postCurrent) => {
     const flight = await this.db.collection("flights").doc(postId);
 
-    console.log("postcurrent", postCurrent);
+    // console.log("postcurrent", postCurrent);
     return await flight.update({
       votes: firestore.FieldValue.arrayUnion(userId),
       current: postCurrent + 1,
