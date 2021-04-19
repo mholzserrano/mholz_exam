@@ -123,12 +123,7 @@ class Flights extends Component {
   };
 
   search = (event) => {
-    console.log("search!!!");
-
-    console.log("orginal: ", this.state.originalFlightsValue);
-
     if (event.target.value) {
-      console.log("search 123:", event.target.value);
       this.setState({
         flights: this.state.originalFlightsValue.filter((flight) => {
           //searchby destination
@@ -154,7 +149,6 @@ class Flights extends Component {
           );
         }),
       });
-      console.log("flight state: ", this.state.flights);
     } else {
       this.setState({
         flights: this.state.originalFlightsValue,
@@ -164,7 +158,6 @@ class Flights extends Component {
 
   setLoginUserId = (userId) => {
     if (!this.state.loginUserId) {
-      // console.log("userid", userId);
       this.setState({
         loginUserId: userId,
       });
@@ -172,42 +165,34 @@ class Flights extends Component {
   };
 
   filter = (event) => {
-    console.log("filter: ", event.target.value);
     this.setState({ filterValue: event.target.value });
   };
 
   async deleteFlight(postId, uid) {
-    console.log("async delete!" + postId);
     await this.props.firebase.removePost(uid, postId);
   }
 
   renderFlightCards(flights) {
     let filteredFlights;
 
-    // console.log(this.state.filterValue);
-
     if (flights) {
       switch (this.state.filterValue) {
         case 1:
-          console.log("9 below");
           filteredFlights = flights.filter((flight) => {
             return flight.data().current <= 9;
           });
           break;
         case 10:
-          console.log("10-99");
           filteredFlights = flights.filter((flight) => {
             return flight.data().current > 9 && flight.data().current < 100;
           });
           break;
         case 100:
-          console.log("100-999");
           filteredFlights = flights.filter((flight) => {
             return flight.data().current >= 99 && flight.data().current < 1000;
           });
           break;
         case 1000:
-          console.log("1000 above");
           filteredFlights = flights.filter((flight) => {
             return flight.data().current > 1000;
           });
@@ -223,7 +208,6 @@ class Flights extends Component {
       });
 
       return filteredFlights.map((flight, i) => {
-        // console.log(flight.id);
         return (
           <FlightCard
             key={i}
@@ -234,7 +218,6 @@ class Flights extends Component {
             voteFlight={this.voteFlight}
             setLoginUserId={this.setLoginUserId}
             voteExisted={flight.data().votes.find((vote) => {
-              // console.log("vote exist", vote);
               return vote == this.state.loginUserId;
             })}
           />

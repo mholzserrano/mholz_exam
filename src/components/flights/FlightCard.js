@@ -62,9 +62,8 @@ class FlightCard extends Component {
   };
 
   render() {
-    const { details, postId } = this.props; // destructure
+    const { details, postId } = this.props;
     const { hovered } = this.state;
-    // console.log(this.props.voteExisted);
     return (
       <div
         style={styles.container}

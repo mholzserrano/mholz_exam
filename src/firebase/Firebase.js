@@ -72,7 +72,7 @@ class Firebase {
     const posts = userData.posts;
 
     // console.log("User collection: ", user.collection("posts"));
-    console.log("New Posts: ", firestore.FieldValue.arrayRemove(postid));
+    console.log("Remove Posts: ", firestore.FieldValue.arrayRemove(postid));
 
     // Delete doc from Firestore
     this.db.collection("flights").doc(postid).delete();
@@ -105,7 +105,6 @@ class Firebase {
   votePost = async (postId, userId, postCurrent) => {
     const flight = await this.db.collection("flights").doc(postId);
 
-    // console.log("postcurrent", postCurrent);
     return await flight.update({
       votes: firestore.FieldValue.arrayUnion(userId),
       current: postCurrent + 1,

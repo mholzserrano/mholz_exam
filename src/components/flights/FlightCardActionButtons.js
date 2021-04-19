@@ -42,7 +42,6 @@ const FlightCardActionButtons = ({
 }) => {
   useEffect(() => {
     setLoginUserId(userId);
-    // console.log("flightcaradaction buttons user id ", userId);
   });
 
   return (
