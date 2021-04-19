@@ -38,10 +38,11 @@ const FlightCardActionButtons = ({
   detailsCurrent,
   voteFlight,
   voteExisted,
+  posterId,
 }) => {
   useEffect(() => {
     setLoginUserId(userId);
-    console.log("flightcaradaction buttons user id ", userId);
+    // console.log("flightcaradaction buttons user id ", userId);
   });
 
   return (
@@ -71,23 +72,35 @@ const FlightCardActionButtons = ({
         {voteExisted ? "VOTED" : "VOTE"}
       </ColorButton> */}
       &nbsp;&nbsp;
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        onClick={() => clickEditFlightCard(postId)}
-      >
-        EDIT
-      </Button>
+      {userId === posterId ? (
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => clickEditFlightCard(postId)}
+        >
+          EDIT
+        </Button>
+      ) : (
+        <Button variant="contained" color="primary" size="small" disabled>
+          EDIT
+        </Button>
+      )}
       &nbsp;&nbsp;
-      <Button
-        variant="contained"
-        color="secondary"
-        size="small"
-        onClick={() => deleteFlightCard(destination, postId, userId)}
-      >
-        DELETE
-      </Button>
+      {userId === posterId ? (
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          onClick={() => deleteFlightCard(destination, postId, userId)}
+        >
+          DELETE
+        </Button>
+      ) : (
+        <Button variant="contained" color="secondary" size="small" disabled>
+          DELETE
+        </Button>
+      )}
     </div>
   );
 };

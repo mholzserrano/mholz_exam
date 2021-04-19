@@ -164,7 +164,7 @@ class Flights extends Component {
 
   setLoginUserId = (userId) => {
     if (!this.state.loginUserId) {
-      console.log("userid", userId);
+      // console.log("userid", userId);
       this.setState({
         loginUserId: userId,
       });
@@ -234,7 +234,7 @@ class Flights extends Component {
             voteFlight={this.voteFlight}
             setLoginUserId={this.setLoginUserId}
             voteExisted={flight.data().votes.find((vote) => {
-              console.log("vote exist", vote);
+              // console.log("vote exist", vote);
               return vote == this.state.loginUserId;
             })}
           />
